@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/bower_components/bootstrap/dist/css/bootstrap.min.css') }}" />
+        {% block css %}
+        {% endblock %}
+
+        <script src="{{ url_for('static', filename='vendor/bower_components/jquery/dist/jquery.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='vendor/bower_components/bootstrap/dist/js/bootstrap.min.js') }}" type="text/javascript"></script>
+        <script src="{{ url_for('static', filename='js/less.js') }}" type="text/javascript"></script>
+
+        {% block js %}
+        {% endblock %}
+    </head>
+    <body>
+
+        {% block nav %}
+        <div class="navbar navbar-inverse" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#collapse-bar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">Realize</a>
+                </div>
+                <div class="navbar-collapse collapse" id="collapse-bar">
+                    {% set index = url_for('main_views.index') %}
+                    {% set questions = url_for('main_views.question_list') %}
+                    {% set logout = url_for('security.logout') %}
+                    {% set login = url_for('security.login') %}
+                    {% set register = url_for('security.register') %}
+                    <ul class="nav navbar-nav">
+                        <li {% if request.path == index %}class="active"{% endif %}><a href="{{ index }}">Home</a></li>
+                        {% if current_user.is_authenticated() %}
+                            <li {% if request.path == questions %}class="active"{% endif %}><a href="{{ questions }}">Questions</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Signed in as {{ current_user.email }} <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{{ logout }}">Logout</a></li>
+                                </ul>
+                            </li>
+                        {% else %}
+                            <li {% if request.path == login %}class="active"{% endif %}><a href="{{ login }}">Login</a></li>
+                            <li {% if request.path == register %}class="active"{% endif %}><a href="{{ register }}">Sign Up</a></li>
+                        {% endif %}
+                    </ul>
+                </div><!--/.navbar-collapse -->
+            </div>
+        </div>
+        {% endblock %}
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

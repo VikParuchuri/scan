@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Questions</h1>
+
+    {% if questions|length == 0 %}
+        <p>You don't have any questions yet.</p>
+    {% endif %}
+
+    {% for q in questions %}
+
+    {% endfor %}
+
+    <hr/>
+
+    <h3>Add a new question!</h3>
+    {{ form|safe }}
+{% endblock %}

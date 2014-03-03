@@ -1,0 +1,11 @@
+.idea/*
+*~
+*.pyc
+scan.db
+test.db
+celerybeat-schedule
+scan/private.py
+.vagrant
+.coverage
+data/models/*
+!.vc

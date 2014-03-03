@@ -1,0 +1,9 @@
+from settings import *
+
+DB_URL = "sqlite:///test.db"
+SQLALCHEMY_DATABASE_URI = DB_URL
+TESTING = True
+
+CHARACTER_LIMIT = 1000
+TRAINING_LIMIT = 50
+QUICK_TEST_LIMIT = 5

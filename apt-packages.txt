@@ -1,0 +1,12 @@
+python-pip
+libfreetype6
+libfreetype6-dev
+zlib1g-dev
+openssl
+memcached
+python-dev
+libssl-dev
+python-setuptools
+libatlas-dev
+libatlas3-base
+redis-server
