@@ -1,8 +1,13 @@
-<form role="form" method="POST" action="{{ url_for('main_views.questions') }}">
+<form role="form" method="POST" action="{{ url_for('main_views.essay_upload', id=question.id) }}" enctype="multipart/form-data">
     {{ form.csrf_token }}
     {% for f in form if f.widget.input_type != 'hidden' %}
     <div class="form-group">
         {{ f.label }}
+        <ul>
+            {% for error in f.errors %}
+            <li class="error"> {{error}} </li>
+            {% endfor %}
+        </ul>
         {{ f(size=20) }}
         <p class="help-block">{{ f.description }}</p>
     </div>

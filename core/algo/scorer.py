@@ -1,3 +1,4 @@
+import calendar
 from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
 from core.algo.features import FeatureGenerator
 import numpy as np
@@ -6,6 +7,11 @@ from sklearn.externals import joblib
 from core.database.models import Model
 from app import db
 from datetime import datetime
+from scan import settings
+import os
+
+class NoModelException(Exception):
+    pass
 
 class Manager(object):
     def __init__(self, question):
@@ -13,14 +19,27 @@ class Manager(object):
 
     def score_essay(self, essay):
         text = essay.text
+        model = self.get_latest_model()
+        model_obj = joblib.load(os.path.join(settings.MODEL_PATH, model.path))
+        return model_obj.predict(text)
+
+    def get_latest_model(self):
+        models = self.question.models
+
+        if len(models) == 0:
+            raise NoModelException
+
+        model = models[-1]
+        return model
 
     def create_model(self):
-        text = [e.text for e in self.question.essays]
-        scores = [e.actual_score for e in self.question.essays if e.score is not None]
+        text = [e.text for e in self.question.essays if e.actual_score is not None]
+        scores = [e.actual_score for e in self.question.essays if e.actual_score is not None]
         scorer = Scorer(text, scores)
         scorer.train()
-        time = datetime.utcnow().isoformat()
-        path_string = "{0}_{1}.pickle".format(self.question.id, time)
+        time = datetime.utcnow()
+        timestamp = calendar.timegm(time.utctimetuple())
+        path_string = "{0}_{1}.pickle".format(self.question.id, timestamp)
         model = Model(
             question=self.question,
             error=scorer.cv_score,
@@ -28,7 +47,9 @@ class Manager(object):
         )
 
         db.session.add(model)
-        joblib.dump(scorer, path_string, compress=9)
+
+        joblib.dump(scorer, os.path.join(settings.MODEL_PATH, path_string), compress=9)
+        db.session.commit()
 
 class Scorer(object):
     classification_max = 4

@@ -1,18 +1,42 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Questions</h1>
+    <h1>Question List</h1>
 
+        <hr/>
+
+        <h3>Add a new question!</h3>
+        {{ form|safe }}
+
+        <hr/>
     {% if questions|length == 0 %}
-        <p>You don't have any questions yet.</p>
+        <h3>You don't have any questions yet.</h3>
     {% endif %}
 
-    {% for q in questions %}
+        <h3>Questions</h3>
 
+    {% for q in questions %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{q.name}}</h3>
+            </div>
+            <div class="panel-body">
+                <p>{{q.prompt}}</p>
+                <p>Essay count: {{ q.essays|length }}</p>
+                {% if q.status %}
+                    <div class="model-status" data-href="{{ q.status }}">
+                    </div>
+                {% endif %}
+            </div>
+            <div class="panel-footer">
+                <div class="btn-group">
+                    <a class="btn btn-primary" href="{{ url_for('main_views.question_detail', id=q.id) }}">View essays</a>
+                    <a class="btn btn-primary method-link" data-href="{{ url_for('main_views.question_detail', id=q.id) }}" href="#" data-method="DELETE">Delete Question</a>
+                </div>
+            </div>
+        </div>
     {% endfor %}
 
     <hr/>
 
-    <h3>Add a new question!</h3>
-    {{ form|safe }}
 {% endblock %}

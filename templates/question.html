@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Detail for {{ question.name }}</h1>
+
+    <hr>
+
+    {% if status %}
+    <div class="model-status" data-href="{{ status }}">
+
+    </div>
+    {% endif %}
+    <div class="btn-group">
+        <a class="btn btn-primary method-link" data-href="{{ url_for('main_views.question_action', id=question.id, action='create') }}" data-method="GET" href="#">Create model</a>
+        <a class="btn btn-primary method-link" data-href="{{ url_for('main_views.question_action', id=question.id, action='create_and_score') }}" data-method="GET" href="#">Create model and score all essays</a>
+    </div>
+
+    {% if question.models|length > 0 %}
+    {% endif %}
+
+    <hr/>
+
+    <h3>Upload a csv file with essays!</h3>
+        <p>The file should have two columns, text and score, in that order.  Text should be the full text of the essay, and score should be the score the essay received (leave blank if not scored).</p>
+        {{ upload_form | safe }}
+    <hr/>
+
+    <h3>Add a new essay!</h3>
+    {{ form|safe }}
+
+    <hr/>
+
+    <h3>Essays</h3>
+
+    {% if question.essays|length == 0 %}
+    <h3>This question doesn't have any essays yet.</h3>
+    {% endif %}
+
+    {% for e in question.essays %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{loop.index}}</h3>
+            </div>
+            <div class="panel-body">
+                <div class="actual-score">Actual score: {% if e.actual_score %} {{e.actual_score|round(1)}}{% endif %}</div>
+                <div class="predicted-score">Predicted score: {% if e.predicted_score %}{{e.predicted_score|round(1)}}{% endif %}</div>
+                <p class="essay-text">Text: {{e.text}}</p>
+            </div>
+            <div class="panel-footer">
+                <div class="btn-group">
+                    <a class="btn btn-primary method-link" data-href="{{ url_for('main_views.essay_detail', id=e.id) }}" data-method="DELETE" href="#">Delete essay</a>
+                    <a class="btn btn-primary method-link" data-href="{{ url_for('main_views.essay_action', id=e.id, action='score') }}" data-method="GET" href="#">Score essay</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock %}

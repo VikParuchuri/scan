@@ -64,6 +64,10 @@ class Essay(db.Model):
     actual_score = db.Column(db.Float)
     info = db.Column(db.Text)
 
+    predicted_score = db.Column(db.Float)
+    model_id = db.Column(db.Integer, db.ForeignKey('models.id'))
+    model = db.relationship("Model", backref=db.backref('essays', order_by=id))
+
     question_id = db.Column(db.Integer, db.ForeignKey('questions.id'))
     question = db.relationship("Question", backref=db.backref('essays', order_by=id))
 

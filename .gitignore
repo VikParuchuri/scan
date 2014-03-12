@@ -9,3 +9,6 @@ scan/private.py
 .coverage
 data/models/*
 !.vc
+src
+build
+.~*

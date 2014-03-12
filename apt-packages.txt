@@ -1,3 +1,4 @@
+build-essential
 python-pip
 libfreetype6
 libfreetype6-dev
@@ -8,5 +9,10 @@ python-dev
 libssl-dev
 python-setuptools
 libatlas-dev
-libatlas3-base
+libatlas-base-dev
 redis-server
+libmysqlclient-dev
+memcached
+git
+nginx
+gfortran

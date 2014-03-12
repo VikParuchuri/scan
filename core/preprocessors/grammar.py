@@ -1,5 +1,4 @@
 import pickle
-from nltk.tokenize import word_tokenize, sent_tokenize
 from scan import settings
 from external.tagger.taggers import PerceptronTagger
 from core.preprocessors.base import BaseCorrector

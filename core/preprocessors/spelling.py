@@ -5,6 +5,9 @@ from scan import settings
 import os
 from core.preprocessors.base import BaseCorrector
 
+def one():
+    return 1
+
 class SpellCorrector(BaseCorrector):
     """
     Slightly adapted from Peter Norvig's spell corrector:  http://norvig.com/spell-correct.html
@@ -39,7 +42,7 @@ class SpellCorrector(BaseCorrector):
         return mistakes / float(len(words) + 1), ' '.join(new_words), new_words
 
     def train(self, features):
-        model = collections.defaultdict(lambda: 1)
+        model = collections.defaultdict(one)
         for f in features:
             model[f] += 1
         return model
