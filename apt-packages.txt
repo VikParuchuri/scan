@@ -12,7 +12,7 @@ libatlas-dev
 libatlas-base-dev
 redis-server
 libmysqlclient-dev
-memcached
 git
 nginx
 gfortran
+libffi-dev
